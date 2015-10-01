@@ -32,7 +32,9 @@ module Canvas
                                      a.quiz_id if a.respond_to? :quiz_id
                                  end
             end
-            unless filtrated.size.zero? || filtrated[0].nil?
+            if filtrated.size.zero? || filtrated[0].nil?
+              item = nil
+            else
               item.id = filtrated.first.id
             end
           end
@@ -44,6 +46,8 @@ module Canvas
         m.tap do |mod|
           unless mod.items_count.zero?
             items = update_ids_for_discussions_and_quizzes.call(self.items course_id: course_id, module_id: mod.id)
+            #filter out stuff that doesn't have a content_id, this means it's not an assignment
+            items = items.select{|item| (item.respond_to?('content_id'))}
             mod.items = fill_due_dates course_id, items
           end
         end
@@ -53,7 +57,7 @@ module Canvas
         course_modules.map(&update_module) :
         Parallel.map(course_modules, in_threads: course_modules.size, &update_module)
     end
-    
+
     private
 
     def fill_due_dates(course_id, items)
