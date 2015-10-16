@@ -108,11 +108,11 @@ describe Canvas do
         end
       end
 
-      xit 'should return array of modules' do
+      it 'should return array of modules' do
         expect(@study_plan.class).to eq Array
       end
 
-      xit 'should contains modules which include items' do
+      it 'should contains modules which include items' do
         expect(@study_plan[0].items.class).to eq Array
         expect(@study_plan[0].items.size).not_to eq 0
       end

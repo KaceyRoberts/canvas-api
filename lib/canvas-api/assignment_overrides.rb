@@ -1,7 +1,7 @@
 module Canvas
   class API
-    def assignment_overrides(course_id:, assignment_id:)
-      get_collection __method__, ids: { course_id: course_id, assignment_id: assignment_id }
+    def assignment_overrides(course_id:, assignment_id:, params: {})
+      get_collection __method__, ids: { course_id: course_id, assignment_id: assignment_id }, params: params
     end
 
     # Usage:
@@ -15,8 +15,8 @@ module Canvas
     #                                           unlock_at: Time.now.utc.iso8601,
     #                                           due_at: nil
     #                                       }})
-    def create_assignment_override(course_id:, assignment_id:, body: {})
-      post_single __method__, ids: { course_id: course_id, assignment_id: assignment_id }, body: body
+    def create_assignment_override(course_id:, assignment_id:, body: {}, params: {})
+      post_single __method__, ids: { course_id: course_id, assignment_id: assignment_id }, body: body, params: params
     end
 
     # Usage:
@@ -29,12 +29,12 @@ module Canvas
     #                                                        due_at: nil
     #                                                    }
     #                                                }
-    def update_assignment_override(course_id:, assignment_id:, override_id:, body: {})
-      put_single __method__, ids: { course_id: course_id, assignment_id: assignment_id, override_id: override_id }, body: body
+    def update_assignment_override(course_id:, assignment_id:, override_id:, body: {}, params: {})
+      put_single __method__, ids: { course_id: course_id, assignment_id: assignment_id, override_id: override_id }, body: body, params: params
     end
 
-    def delete_assignment_override(course_id:, assignment_id:, override_id:)
-      delete_single __method__, ids: { course_id: course_id, assignment_id: assignment_id, override_id: override_id }
+    def delete_assignment_override(course_id:, assignment_id:, override_id:, params: {})
+      delete_single __method__, ids: { course_id: course_id, assignment_id: assignment_id, override_id: override_id }, params: params
     end
   end
 end

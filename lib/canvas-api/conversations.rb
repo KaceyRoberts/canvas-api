@@ -11,8 +11,8 @@ module Canvas
 
                                   # })
 
-    def create_conversation(body: {})
-      post_collection __method__, body: body
+    def create_conversation(body: {}, params: {})
+      post_collection __method__, body: body, params: params
     end
 
   end

@@ -14,13 +14,13 @@ module Canvas
     # == Returns:
     #   Collection of modules with items
     #
-    def study_plan(course_id:)
-      course_modules = modules(course_id: course_id)
+    def study_plan(course_id:, params: {})
+      course_modules = modules(course_id: course_id, params: params)
 
       # Updating IDs for discussions and quizzes 'cause Canvas has 2 IDs for
       # each corresponding item - all depends on a way which we use to retrieve them.
       # And we should use one, which came from `assignments` endpoint.
-      assignments = self.assignments(course_id: course_id)
+      assignments = self.assignments(course_id: course_id, params: params)
       update_ids_for_discussions_and_quizzes = -> (items) do
         items.map do |item|
           if %w(Quiz Discussion).include? item.type
@@ -45,10 +45,10 @@ module Canvas
       update_module = lambda do |m|
         m.tap do |mod|
           unless mod.items_count.zero?
-            items = update_ids_for_discussions_and_quizzes.call(self.items course_id: course_id, module_id: mod.id)
+            items = update_ids_for_discussions_and_quizzes.call(self.items course_id: course_id, module_id: mod.id, params: params)
             #filter out stuff that doesn't have a content_id, this means it's not an assignment
             items = items.select{|item| (item.respond_to?('content_id'))}
-            mod.items = fill_due_dates course_id, items
+            mod.items = fill_due_dates course_id, items, params: params
           end
         end
       end
@@ -60,7 +60,7 @@ module Canvas
 
     private
 
-    def fill_due_dates(course_id, items)
+    def fill_due_dates(course_id, items, params: {})
       update_item = lambda do |item|
 
         item.tap do |item|
@@ -73,7 +73,9 @@ module Canvas
 
             overrides = self.assignment_overrides(
                 course_id: course_id,
-                assignment_id: item.type == 'Assignment' ? item.content_id : item.id)
+                assignment_id: item.type == 'Assignment' ? item.content_id : item.id,
+                params: params
+            ),
 
             unless overrides.nil?
               item.due_dates += expand_due_dates_for_students(overrides)

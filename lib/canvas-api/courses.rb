@@ -1,7 +1,7 @@
 module Canvas
   class API
-    def courses
-      get_collection __method__
+    def courses(params: {})
+      get_collection __method__, params: params
     end
   end
 end
