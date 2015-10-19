@@ -69,16 +69,20 @@ module Canvas
                 course_id: course_id,
                 content_id: item.type == 'Assignment' ? item.content_id : item.id)
 
-            item.due_dates = [{student_id: 0, due_at: assignment_details.due_at}]
+            if assignment_details.nil?
+              item.due_dates = []
+            else
+              item.due_dates = [{student_id: 0, due_at: assignment_details.due_at}]
 
-            overrides = self.assignment_overrides(
-                course_id: course_id,
-                assignment_id: item.type == 'Assignment' ? item.content_id : item.id,
-                params: params
-            ),
+              overrides = self.assignment_overrides(
+                  course_id: course_id,
+                  assignment_id: item.type == 'Assignment' ? item.content_id : item.id,
+                  params: params
+              )
 
-            unless overrides.nil?
-              item.due_dates += expand_due_dates_for_students(overrides)
+              unless overrides.nil?
+                item.due_dates += expand_due_dates_for_students(overrides)
+              end
             end
           end
         end
