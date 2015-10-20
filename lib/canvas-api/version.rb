@@ -1,5 +1,5 @@
 module Canvas
   class API
-    VERSION = '0.0.3.21'
+    VERSION = '0.0.3.22'
   end
 end

@@ -144,7 +144,10 @@ module Canvas
     # Creating corresponding helpers for performing requests during class initialisation
     %i(get post put delete).each do |http_verb|
       define_method("#{http_verb}_single") do |method_name, ids: {}, params: {}, body: {}|
-        _, formatted_responce = self.perform_request(http_verb, method_name, ids: ids, params: params, body: body, result_formatting: ->(s) { s.to_struct })
+        _, formatted_responce = self.perform_request(http_verb, method_name, ids: ids, params: params, body: body, result_formatting: ->(s) {
+                                                                s = s.is_a?(Array) && s.length > 0 ? s[0].to_struct : s.to_struct
+                                                                s
+                                                              })
         formatted_responce
       end
 
