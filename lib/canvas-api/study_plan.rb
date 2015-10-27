@@ -53,9 +53,7 @@ module Canvas
         end
       end
 
-      @options[:cache] ?
-        course_modules.map(&update_module) :
-        Parallel.map(course_modules, in_threads: course_modules.size, &update_module)
+      course_modules.map(&update_module)
     end
 
     private
@@ -88,9 +86,7 @@ module Canvas
         end
       end
 
-      @options[:cache] ?
-        items.map(&update_item) :
-        Parallel.map(items, in_threads: items.size, &update_item)
+      items.map(&update_item)
     end
 
     def expand_due_dates_for_students(due_dates)
