@@ -23,7 +23,7 @@ module Canvas
       assignments = self.assignments(course_id: course_id, params: params)
       update_ids_for_discussions_and_quizzes = -> (items) do
         items.map do |item|
-          if %w(Quiz Discussion).include? item.type
+          if %w(Quiz Discussion).include? item.type && item.respond_to?('assignment_id') && !item.assignment_id.nil?
             filtrated = assignments.select do |a|
               item.content_id == case item.type
                                    when 'Discussion'
