@@ -58,7 +58,8 @@ module Canvas
     submissions:                '/api/v1/sections/%{section_id}/assignments/%{assignment_id}/submissions',
     create_conversation:        '/api/v1/conversations',
     admins:                     '/api/v1/accounts/%{account_id}/admins',
-    users:                      '/api/v1/accounts/%{account_id}/users'
+    users:                      '/api/v1/accounts/%{account_id}/users',
+    user_assignments:           '/api/v1/users/%{user_id}/courses/%{course_id}/assignments'
   }
 
   # Main class. All useful work we are doing here. Should be initialised using
